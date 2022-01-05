@@ -1,3 +1,4 @@
+NebulaAPI = "http://loopback.gmod:2069/";
 
 function p(x)
     return x and player.GetByID(x) or (CLIENT and LocalPlayer() or player.GetByID(1))
