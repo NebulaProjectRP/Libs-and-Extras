@@ -16,6 +16,103 @@ function ent:getFrameTime()
     return diff
 end
 
+
+local ent = FindMetaTable("Entity")
+
+function ent:getFrameTime()
+    local diff = CurTime() - (self._lastFrame or CurTime())
+    self._lastFrame = CurTime()
+    return diff
+end
+
+local timerMeta = {
+    __index = __index,
+    Name = "",
+    Func = function()
+    end,
+    Remove = function(s)
+        timer.Remove(s.Name)
+    end,
+    Remaining = function(s)
+        return timer.TimeLeft(s.Name)
+    end,
+    Pause = function(s)
+        timer.Pause(s.Name)
+    end,
+    Resume = function(s)
+        timer.UnPause(s.Name)
+    end,
+    Do = function(s, substract)
+        s.Func(s.Controller)
+        if (substract) then
+            timer.Adjust(s.Name, s.Delay, timer.RepsLeft(s.Name) - 1)
+            if (timer.RepsLeft(s.Name) <= 0) then
+                s:Remove()
+            end
+        end
+    end
+}
+
+local waitingTimersEnt = {}
+function ent:Wait(time, fun)
+    self._timerIndex = (self._timerIndex or 0) + 1
+    local timerName = self:EntIndex() .. "#_Simple_" .. self._timerIndex
+
+    local timerObject = {}
+    setmetatable(timerObject, timerMeta)
+    timerObject.Name = timerName
+    timerObject.Controller = self
+    timerObject.Func = fun
+    timerObject.__tostring = function()
+        return timerName
+    end
+
+    timer.Create(timerName, time, 1, function()
+        if not IsValid(self) then
+            return
+        end
+        fun()
+    end)
+
+    return timerObject
+end
+
+function ent:LoopTimer(name, interval, fun)
+    if not self._loopTimers then
+        self._loopTimers = {}
+    end
+    self._loopTimers[name] = self:EntIndex() .. "#_Loop_" .. name
+
+    local timerObject = {}
+    setmetatable(timerObject, timerMeta)
+    timerObject.Name = self._loopTimers[name]
+    timerObject.Controller = self
+    timerObject.Func = fun
+
+    timer.Create(self._loopTimers[name], interval, 0, function()
+        if not IsValid(self) then
+            MsgN(timerObject)
+            return
+        end
+        fun()
+    end)
+
+    return timerObject
+end
+
+hook.Add("EntityRemoved", "RemoveTimers", function(ent)
+    if (ent._timerIndex) then
+        for k = 1, ent._timerIndex do
+            timer.Remove(ent:EntIndex() .. "#_ID" .. k)
+        end
+    end
+    if (ent._loopTimers) then
+        for k, v in pairs(ent._loopTimers) do
+            timer.Remove(v)
+        end
+    end
+end)
+
 RPC_OWNER = 1
 RPC_PVS = 2
 RPC_PAS = 3
