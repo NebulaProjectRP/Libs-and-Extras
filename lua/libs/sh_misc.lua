@@ -1,4 +1,4 @@
-NebulaAPI = "http://loopback.gmod:80/";
+NebulaAPI = "http://loopback.gmod:2001/";
 
 function p(x)
     return x and player.GetByID(x) or (CLIENT and LocalPlayer() or player.GetByID(1))
@@ -91,7 +91,6 @@ function ent:LoopTimer(name, interval, fun)
 
     timer.Create(self._loopTimers[name], interval, 0, function()
         if not IsValid(self) then
-            MsgN(timerObject)
             return
         end
         fun()
