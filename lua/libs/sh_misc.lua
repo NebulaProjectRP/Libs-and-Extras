@@ -8,25 +8,21 @@ if SERVER then
     util.AddNetworkString("Nebula.CallOnClient")
 end
 
-local ent = FindMetaTable("Entity")
+local meta = FindMetaTable("Entity")
 
-function ent:getFrameTime()
+function meta:getFrameTime()
     local diff = CurTime() - (self._lastFrame or CurTime())
     self._lastFrame = CurTime()
     return diff
 end
 
-
-local ent = FindMetaTable("Entity")
-
-function ent:getFrameTime()
+function meta:getFrameTime()
     local diff = CurTime() - (self._lastFrame or CurTime())
     self._lastFrame = CurTime()
     return diff
 end
 
 local timerMeta = {
-    __index = __index,
     Name = "",
     Func = function()
     end,
@@ -53,13 +49,13 @@ local timerMeta = {
     end
 }
 
-local waitingTimersEnt = {}
-function ent:Wait(time, fun)
+//timerMeta.__index = timerMeta
+
+function meta:Wait(time, fun)
     self._timerIndex = (self._timerIndex or 0) + 1
     local timerName = self:EntIndex() .. "#_Simple_" .. self._timerIndex
 
-    local timerObject = {}
-    setmetatable(timerObject, timerMeta)
+    local timerObject = table.Copy(timerMeta)
     timerObject.Name = timerName
     timerObject.Controller = self
     timerObject.Func = fun
@@ -77,14 +73,13 @@ function ent:Wait(time, fun)
     return timerObject
 end
 
-function ent:LoopTimer(name, interval, fun)
+function meta:LoopTimer(name, interval, fun)
     if not self._loopTimers then
         self._loopTimers = {}
     end
     self._loopTimers[name] = self:EntIndex() .. "#_Loop_" .. name
 
-    local timerObject = {}
-    setmetatable(timerObject, timerMeta)
+    local timerObject = table.Copy(timerMeta)
     timerObject.Name = self._loopTimers[name]
     timerObject.Controller = self
     timerObject.Func = fun
@@ -117,7 +112,7 @@ RPC_PVS = 2
 RPC_PAS = 3
 RPC_ALL = 4
 
-function ent:callOnClient(target, method, args)
+function meta:callOnClient(target, method, args)
     net.Start("Nebula.CallOnClient")
     net.WriteEntity(self)
     net.WriteString(method)
@@ -143,7 +138,7 @@ local awaiting = {}
 net.Receive("Nebula.CallOnClient", function()
     local ent = net.ReadUInt(16)
     if not IsValid(Entity(ent)) then
-        if not (awaiting[ent]) then
+        if not awaiting[ent] then
             awaiting[ent] = {}
             MsgN("Entity#" , ent, " is awaiting to be spawned.")
         end
