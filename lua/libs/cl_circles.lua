@@ -493,5 +493,11 @@ _R.Circles = {
 	CalculateVertices = CalculateVertices,
 }
 
-NebulaUI.Circles = _R.Circles
+if (NebulaUI) then
+	NebulaUI.Circles = _R.Circles
+else
+	timer.Simple(0, function()
+		NebulaUI.Circles = _R.Circles
+	end)
+end
 return _R.Circles
