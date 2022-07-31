@@ -1,4 +1,7 @@
-NebulaAPI = "http://loopback.gmod:2001/";
+local lan = GetConVar("sv_lan")
+
+NebulaAPI = lan:GetBool() and "http://loopback.gmod:2001" or "http://145.239.205.161:2001"
+NebulaAPI.API_KEY = "CAT.secretkey"
 
 function p(x)
     return x and player.GetByID(x) or (CLIENT and LocalPlayer() or player.GetByID(1))
