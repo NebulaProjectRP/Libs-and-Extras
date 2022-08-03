@@ -46,15 +46,16 @@ function TOOL:LeftClick(trace)
 	local content = PermaProps.PPGetEntTable(ent)
 	if not content then return end
 
-	local max = tonumber(sql.QueryValue("SELECT MAX(id) FROM permaprops;"))
-	if not max then max = 1 else max = max + 1 end
+	local i = 0
+	while (PermaProps.Data[i]) do
+		i = i + 1
+	end
 
 	local new_ent = PermaProps.PPEntityFromTable(content, max)
 	if !new_ent or !new_ent:IsValid() then return end
 
 	PermaProps.SparksEffect( ent )
-
-	PermaProps.SQL.Query("INSERT INTO permaprops (id, map, content) VALUES(NULL, ".. sql.SQLStr(game.GetMap()) ..", ".. sql.SQLStr(util.TableToJSON(content)) ..");")
+	PermaProps.Data[i] = sql.SQLStr(util.TableToJSON(content))
 	ply:ChatPrint("You saved " .. ent:GetClass() .. " with model ".. ent:GetModel() .. " to the database.")
 
 	ent:Remove()
