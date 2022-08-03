@@ -115,7 +115,7 @@ local function pp_open_menu(ply)
         if i > 200 then break end
         i = i + 1
         local data = util.JSONToTable(content)
-
+        if (not data or not data.Class) then continue end
         SendTable[id] = {
             Model = data.Model,
             Class = data.Class,
