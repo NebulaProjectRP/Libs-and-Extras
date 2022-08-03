@@ -184,6 +184,7 @@ function PermaProps.ReloadPermaProps()
 
     for id, content in pairs(PermaProps.Data) do
         local data = util.JSONToTable(content)
+        if not data or not data.Class then continue end
         local e = PermaProps.PPEntityFromTable(data, tonumber(id))
         if not e or not e:IsValid() then continue end
     end
