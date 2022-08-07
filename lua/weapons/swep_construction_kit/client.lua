@@ -1341,7 +1341,8 @@ hook.Add("ShouldDrawLocalPlayer", "ThirdPerson", function(pl)
     if IsValid(wep) and wep.useThirdPerson then return true end
 end)
 
-local wep = p(1):GetActiveWeapon()
-timer.Simple(0.1, function()
-	//wep:OpenBrowser("models/player/alyx.mdl", "model")
-end)
+-- local wep = p(1):GetActiveWeapon()
+
+-- timer.Simple(0.1, function()
+-- 	//wep:OpenBrowser("models/player/alyx.mdl", "model")
+-- end)
