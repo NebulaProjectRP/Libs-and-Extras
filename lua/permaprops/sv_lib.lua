@@ -28,7 +28,7 @@ function PermaProps.PPGetEntTable(ent)
 
     if PermaProps.SpecialENTSSave[ent:GetClass()] ~= nil and isfunction(PermaProps.SpecialENTSSave[ent:GetClass()]) then
         local othercontent = PermaProps.SpecialENTSSave[ent:GetClass()](ent)
-        if not othercontent then return false end
+        if not othercontent then MsgN("No other content?") return false end
 
         if othercontent ~= nil and istable(othercontent) then
             table.Merge(content, othercontent)
@@ -69,7 +69,6 @@ function PermaProps.PPGetEntTable(ent)
         content.Class = "prop_physics"
     end
     --content.Table = PermaProps.UselessContent( ent:GetTable() )
-
     return content
 end
 
@@ -82,10 +81,6 @@ function PermaProps.PPEntityFromTable(data, id)
 
     local ent = ents.Create(data.Class)
     if not ent then return false end
-
-    if not ent:IsVehicle() then
-        if not ent:IsValid() then return false end
-    end
 
     ent:SetPos(data.Pos or Vector(0, 0, 0))
     ent:SetAngles(data.Angle or Angle(0, 0, 0))
@@ -183,8 +178,11 @@ function PermaProps.ReloadPermaProps()
     end
 
     for id, content in pairs(PermaProps.Data) do
+        content = string.Replace(content, "'", "")
         local data = util.JSONToTable(content)
-        if not data or not data.Class then continue end
+        if not data or not data.Class then
+            continue
+        end
         local e = PermaProps.PPEntityFromTable(data, tonumber(id))
         if not e or not e:IsValid() then continue end
     end
