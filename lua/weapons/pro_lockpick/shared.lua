@@ -83,7 +83,7 @@ function SWEP:PrimaryAttack()
     self:SetLockpickEnt(ent)
     self:SetLockpickStartTime(CurTime())
     local endDelta = hook.Call("lockpickTime", nil, Owner, ent) or util.SharedRandom("DarkRP_Lockpick" .. self:EntIndex() .. "_" .. self:GetTotalLockpicks(), 10, 30)
-    self:SetLockpickEndTime(CurTime() + endDelta / 2.5)
+    self:SetLockpickEndTime(CurTime() + endDelta / 4)
     self:SetTotalLockpicks(self:GetTotalLockpicks() + 1)
 
 
