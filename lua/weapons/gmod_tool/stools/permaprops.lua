@@ -1,4 +1,4 @@
---[[
+/*
 	PermaProps
 	Created by Entoros, June 2010
 	Facepunch: http://www.facepunch.com/member.php?u=180808
@@ -12,123 +12,84 @@
 
 	Remake:
 		By Malboro the 28/12/2012
-]]
-TOOL.Category = "Props Tool"
-TOOL.Name = "PermaProps"
-TOOL.Command = nil
-TOOL.ConfigName = ""
+*/
+
+TOOL.Category		=	"Props Tool"
+TOOL.Name			=	"PermaProps"
+TOOL.Command		=	nil
+TOOL.ConfigName		=	""
 
 if CLIENT then
-    language.Add("Tool.permaprops.name", "PermaProps")
-    language.Add("Tool.permaprops.desc", "Save a props permanently")
-    language.Add("Tool.permaprops.0", "LeftClick: Add RightClick: Remove Reload: Update")
+	language.Add("Tool.permaprops.name", "PermaProps")
+	language.Add("Tool.permaprops.desc", "Save a props permanently")
+	language.Add("Tool.permaprops.0", "LeftClick: Add RightClick: Remove Reload: Update")
 
-    surface.CreateFont("PermaPropsToolScreenFont", {
-        font = "Arial",
-        size = 40,
-        weight = 1000,
-        antialias = true,
-        additive = false
-    })
-
-    surface.CreateFont("PermaPropsToolScreenSubFont", {
-        font = "Arial",
-        size = 30,
-        weight = 1000,
-        antialias = true,
-        additive = false
-    })
+	surface.CreateFont("PermaPropsToolScreenFont", { font = "Arial", size = 40, weight = 1000, antialias = true, additive = false })
+	surface.CreateFont("PermaPropsToolScreenSubFont", { font = "Arial", size = 30, weight = 1000, antialias = true, additive = false })
 end
 
 function TOOL:LeftClick(trace)
-    if CLIENT then return true end
-    local ent = trace.Entity
-    local ply = self:GetOwner()
 
-    if not PermaProps then
-        ply:ChatPrint("ERROR: Lib not found")
+	if CLIENT then return true end
 
-        return
-    end
+	local ent = trace.Entity
+	local ply = self:GetOwner()
 
-    if not PermaProps.HasPermission(ply, "Save") then return end
+	if not PermaProps then ply:ChatPrint( "ERROR: Lib not found" ) return end
+	
+	if !PermaProps.HasPermission( ply, "Save") then return end
 
-    if not ent:IsValid() then
-        ply:ChatPrint("That is not a valid entity !")
-
-        return
-    end
-
-    if ent:IsPlayer() then
-        ply:ChatPrint("That is a player !")
-
-        return
-    end
-
-    if ent.PermaProps then
-        ply:ChatPrint("That entity is already permanent !")
-
-        return
-    end
+	if not ent:IsValid() then ply:ChatPrint( "That is not a valid entity !" ) return end
+	if ent:IsPlayer() then ply:ChatPrint( "That is a player !" ) return end
+	if ent.PermaProps then ply:ChatPrint( "That entity is already permanent !" ) return end
 
     local content = PermaProps.PPGetEntTable(ent)
     if not content then return end
-    local i = 0
 
-    while PermaProps.Data[i] do
-        i = i + 1
+    local max = 1
+
+    if not table.IsEmpty(PermaProps.Data) then
+        while PermaProps.Data[max] do
+            max = max + 1
+        end
     end
 
-    local new_ent = PermaProps.PPEntityFromTable(content, i)
-    if not new_ent or not new_ent:IsValid() then return end
-    PermaProps.SparksEffect(ent)
-    PermaProps.Data[i] = sql.SQLStr(util.TableToJSON(content))
+    local new_ent = PermaProps.PPEntityFromTable(content, max)
+    if !new_ent or !new_ent:IsValid() then return end
+
+    PermaProps.SparksEffect( ent )
+    
+    PermaProps.Data[max] = content
+    file.Write(game.GetMap() .. ".txt", util.TableToJSON(PermaProps.Data))
     ply:ChatPrint("You saved " .. ent:GetClass() .. " with model " .. ent:GetModel() .. " to the database.")
+
     ent:Remove()
 
     return true
 end
 
 function TOOL:RightClick(trace)
+
     if CLIENT then return true end
-    local ent = trace.Entity
-    local ply = self:GetOwner()
 
-    if not PermaProps then
-        ply:ChatPrint("ERROR: Lib not found")
+	local ent = trace.Entity
+	local ply = self:GetOwner()
 
-        return
-    end
+	if not PermaProps then ply:ChatPrint( "ERROR: Lib not found" ) return end
 
-    if not PermaProps.HasPermission(ply, "Delete") then return end
+	if !PermaProps.HasPermission( ply, "Delete") then return end
 
-    if not ent:IsValid() then
-        ply:ChatPrint("That is not a valid entity !")
+	if not ent:IsValid() then ply:ChatPrint( "That is not a valid entity !" ) return end
+	if ent:IsPlayer() then ply:ChatPrint( "That is a player !" ) return end
+	if not ent.PermaProps then ply:ChatPrint( "That is not a PermaProp !" ) return end
+	if not ent.PermaProps_ID then ply:ChatPrint( "ERROR: ID not found" ) return end
 
-        return
-    end
-
-    if ent:IsPlayer() then
-        ply:ChatPrint("That is a player !")
-
-        return
-    end
-
-    if not ent.PermaProps then
-        ply:ChatPrint("That is not a PermaProp !")
-
-        return
-    end
-
-    if not ent.PermaProps_ID then
-        ply:ChatPrint("ERROR: ID not found")
-
-        return
-    end
+    PermaProps.SparksEffect( ent )
 
     PermaProps.Data[ent.PermaProps_ID] = nil
     file.Write(game.GetMap() .. ".txt", util.TableToJSON(PermaProps.Data))
     ply:ChatPrint("You erased " .. ent:GetClass() .. " with a model of " .. ent:GetModel() .. " from the database.")
+
     ent:Remove()
 
     return true
