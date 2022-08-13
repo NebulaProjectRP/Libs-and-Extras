@@ -17,6 +17,7 @@ local ServerWhitelist = {
     "76561198878066418", -- Obama Nae
     "76561199044806685", -- LoserLG
     "76561198124252128", -- Abra
+    "76561198082601679", -- Dahpie (Gonzo's alt)
 }
 
 hook.Add("CheckPassword", "Nebula.WhitelistCheck", function(steamid64)
