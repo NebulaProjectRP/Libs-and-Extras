@@ -32,3 +32,30 @@ end)
 concommand.Add("nebula_thirdperson", function()
     thirdPerson:SetBool(not thirdPerson:GetBool())
 end, nil, "Toggle thirdperson view.")
+
+local jellyTargets = {}
+local maxDistance = 32 ^ 2
+
+hook.Add("Think", "Nebula.TransparentPerrs", function()
+    for ply, dist in pairs(jellyTargets) do
+        if (dist > maxDistance) then
+            ply:SetMaterial("")
+            jellyTargets[ply] = nil
+        end
+    end
+end)
+
+hook.Add("PrePlayerDraw", "Nebula.TransparentPerrs", function(ply)
+    if (ply == LocalPlayer()) then return end
+
+    local pos = LocalPlayer():GetPos() + LocalPlayer():OBBCenter()
+    local target = ply:GetPos() + ply:OBBCenter()
+    local dist = pos:DistToSqr(target)
+
+    if (not jellyTargets[ply] and dist < maxDistance) then
+        jellyTargets[ply] = dist
+        ply:SetMaterial("models/effects/resist_shield/resist_shield_gonzo")
+    else
+        jellyTargets[ply] = dist
+    end
+end)
