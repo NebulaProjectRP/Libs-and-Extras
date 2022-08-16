@@ -31,4 +31,4 @@ end)
 
 concommand.Add("nebula_thirdperson", function()
     thirdPerson:SetBool(not thirdPerson:GetBool())
-end)
+end, nil, "Toggle thirdperson view.")
