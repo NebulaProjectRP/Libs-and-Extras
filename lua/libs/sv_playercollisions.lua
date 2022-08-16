@@ -1,5 +1,4 @@
-hook.Add("ShouldCollide", "Nebula.PlayerCollisions", function(ent1, ent2)
-    if ent1:IsPlayer() and ent2:IsPlayer() then
-        return false
-    end
+hook.Add("PlayerTick", "Nebula.PlayerCollisions", function(ply)
+    ply:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
+    ply:SetAvoidPlayers(false)
 end)
