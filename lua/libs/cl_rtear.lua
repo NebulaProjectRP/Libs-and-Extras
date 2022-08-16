@@ -30,8 +30,6 @@ function RT.Create(identifier, wi, he, mat, add)
     return identifier
 end
 
-local rendering = false
-
 function RT.Pop(id)
     RT.Pool[id].material:SetTexture("$basetexture", RT.Pool[id].RT)
     render.PushRenderTarget(RT.Pool[id].RT)
