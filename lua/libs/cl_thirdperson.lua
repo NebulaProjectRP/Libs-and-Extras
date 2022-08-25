@@ -2,7 +2,6 @@ local thirdPerson = CreateClientConVar("cl_nebula_thirdperson", 0)
 
 hook.Add("CalcView", "Nebula.ThirdPerson", function(ply, origin, ang, fov, znear, zfar)
     if not ply or not thirdPerson:GetBool() then return end
-
     local pos = ply:EyePos()
 
     local trace = util.TraceHull({
