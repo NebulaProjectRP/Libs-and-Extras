@@ -1,6 +1,5 @@
 
 NebulaAPI = NebulaAPI or {}
-MsgN(GetHostName())
 NebulaAPI.HOST = string.StartWith(GetHostName(), "Dev") and "http://loopback.gmod:2001/" or "http://145.239.205.161:2001/"
 
 function p(x)
@@ -132,8 +131,10 @@ function meta:callOnClient(target, method, args)
         net.SendPAS(self:GetPos())
     elseif (target == RPC_ALL) then
         net.Broadcast()
-    elseif (target:IsPlayer()) then
+    elseif (isentity(target) and target:IsPlayer()) then
         net.Send(target)
+    else
+        net.SendPVS(self:GetPos())
     end
 end
 
