@@ -19,18 +19,18 @@ end
 
 for _, v in pairs(file.Find("libs/security/*.lua", "LUA")) do
     if (SERVER and string.StartWith(v, "sv_")) then
-        include("libs/" .. v)
+        include("libs/security/" .. v)
     elseif (string.StartWith(v, "cl_")) then
         if SERVER then
-            AddCSLuaFile("libs/" .. v)
+            AddCSLuaFile("libs/security/" .. v)
         else
-            include("libs/" .. v)
+            include("libs/security/" .. v)
         end
     elseif (string.StartWith(v, "sh_")) then
         if SERVER then
-            AddCSLuaFile("libs/" .. v)
+            AddCSLuaFile("libs/security/" .. v)
         end
-        include("libs/" .. v)
+        include("libs/security/" .. v)
     end
 end
 
