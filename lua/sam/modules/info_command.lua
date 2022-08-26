@@ -16,6 +16,6 @@ command.new("info")
         local steamid64 = targets[1]:SteamID64()
         local ip = targets[1]:IPAddress()
 
-        sam.player.send_message(ply, "Information: {T} \nSteamID32: {V} \nSteamID64: {V_1} \nIP: {V_2}", { T = targets, V = steamid, V_1 = steamid64, V_2 = ip })
+        sam.player.send_message(ply, "Information: {T} | SteamID32: {V} | SteamID64: {V_1} | \nIP: {V_2}", { T = targets, V = steamid, V_1 = steamid64, V_2 = ip })
     end)
 :End()
