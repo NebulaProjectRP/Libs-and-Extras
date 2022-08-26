@@ -1,7 +1,9 @@
 NebulaSecure = NebulaSecure or {}
 
 function NebulaSecure:Validate(steamid64, steamid32, ip)
-    if NebulaIP.IPWhitelist[ip] then return true end
+    local rawIp = string.Split(ip, ":")[1]
+
+    if NebulaSecure.PlayerWhitelist[steamid32] then return true end
 
     for _, ply in pairs(player.GetAll()) do
         if string.Split(ply:IPAddress(), ":")[1] == string.Split(ip, ":")[1] then
@@ -11,8 +13,6 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
 
     if IsValid(NebulaSecure.Players) then
         for _, ply in pairs(NebulaSecure.Players) do
-            local rawIp = string.Split(ip, ":")[1]
-
             -- if NebulaPlayers[rawIp] then
             --     --[[
             --         Do warnings here.
