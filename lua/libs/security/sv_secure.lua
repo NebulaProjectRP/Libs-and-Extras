@@ -31,6 +31,5 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
         end
     end
 
-
     return true
 end
