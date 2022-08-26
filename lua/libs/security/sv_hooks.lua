@@ -9,13 +9,16 @@ hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
     })
 
     NebulaDriver:MySQLSelect("secure_players", nil, function(data)
-        NebulaSecure.Players = data
+        for _, ply in pairs(data) do
+            local rawIp = string.Split(ip, ":")[1]
+            NebulaPlayers[rawIp] = ply
+        end
     end)
 end)
 
 hook.Add("CheckPassword", "Nebula.Secure:InitialConnect", function(sid64, ipAddress)
-    local ip = string.Split(ipAddress, ":")[1]
-    return NebulaSecure:ValidateIP(ip)
+    local sid32 = util.SteamIDFrom64(sid64)
+    return NebulaSecure:ValidateIP(sid64, sid32, ipAddress)
 end)
 
 -- Disables editing of properties on entities
