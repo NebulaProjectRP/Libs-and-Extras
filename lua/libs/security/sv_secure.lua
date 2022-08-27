@@ -27,7 +27,7 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
                 steamid32 = steamid32,
                 ip = ip
             }, function()
-                MsgN("Nebula Secure | " .. steamid64 .. " has been added to the database.")
+                MsgN("[NebulaSecure] " .. steamid64 .. " has been added to the database.")
             end)
         end
     end
