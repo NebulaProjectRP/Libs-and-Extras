@@ -23,6 +23,7 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
 
         if not found then
             local data = {
+                time = os.time(),
                 steamid64 = steamid64,
                 steamid32 = steamid32,
                 ip = ip,

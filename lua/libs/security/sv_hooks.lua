@@ -4,10 +4,11 @@ NebulaSecure.Players = {}
 
 hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
     NebulaDriver:MySQLCreateTable("secure_players", {
-        id = "INT NOT NULL AUTO_INCREMENT",
+        id = "INT(22) NOT NULL AUTO_INCREMENT",
+        time = "INT(22)",
         steamid32 = "VARCHAR(22)",
         steamid64 = "VARCHAR(22)",
-        ip = "VARCHAR(22)",
+        ip = "VARCHAR(32)",
     }, "id")
 
     NebulaDriver:MySQLSelect("secure_players", nil, function(data)
