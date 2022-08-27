@@ -10,7 +10,7 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
         end
     end
 
-    if IsValid(NebulaSecure.Players) then
+    if NebulaSecure.Players then
         local found = false
 
         for _, data in pairs(NebulaSecure.Players) do
