@@ -1,4 +1,4 @@
-MsgC(Color(255, 50, 255), "[LIB] ", color_white, " Loading Library utilities\n")
+MsgC(Color(255, 50, 255), "[LIB] ", color_white, " Loading libraries...\n")
 
 for _, v in pairs(file.Find("libs/*.lua", "LUA")) do
     if (SERVER and string.StartWith(v, "sv_")) then
@@ -34,4 +34,6 @@ for _, v in pairs(file.Find("libs/security/*.lua", "LUA")) do
     end
 end
 
-MsgC(Color(255, 50, 255), "[LIB] ", color_white, " Loaded successfuly\n")
+MsgC(Color(255, 50, 255), "[NebulaSecure] ", color_white, " Loaded\n")
+
+MsgC(Color(255, 50, 255), "[LIB] ", color_white, " Libraries loaded successfuly.\n")

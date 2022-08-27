@@ -6,7 +6,7 @@ hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
         steamid32 = "VARCHAR(22)",
         steamid64 = "VARCHAR(22)",
         ip = "VARCHAR(22)",
-    })
+    }, "id")
 
     NebulaDriver:MySQLSelect("secure_players", nil, function(data)
         for _, ply in pairs(data) do
