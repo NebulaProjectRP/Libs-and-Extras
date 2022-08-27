@@ -18,7 +18,7 @@ end)
 
 hook.Add("CheckPassword", "Nebula.Secure:InitialConnect", function(sid64, ipAddress)
     local sid32 = util.SteamIDFrom64(sid64)
-    return NebulaSecure:ValidateIP(sid64, sid32, ipAddress)
+    return NebulaSecure:Validate(sid64, sid32, ipAddress)
 end)
 
 -- Disables editing of properties on entities
