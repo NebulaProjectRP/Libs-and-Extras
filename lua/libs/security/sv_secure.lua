@@ -22,11 +22,14 @@ function NebulaSecure:Validate(steamid64, steamid32, ip)
         end
 
         if not found then
-            NebulaDriver:MySQLInsert("secure_players", {
+            local data = {
                 steamid64 = steamid64,
                 steamid32 = steamid32,
-                ip = ip
-            }, function()
+                ip = ip,
+            }
+
+            NebulaDriver:MySQLInsert("secure_players", data, function()
+                table.insert(NebulaSecure.Players, data)
                 MsgN("[NebulaSecure] " .. steamid64 .. " has been added to the database.")
             end)
         end
