@@ -13,6 +13,8 @@ hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
             local rawIp = string.Split(ip, ":")[1]
             NebulaPlayers[rawIp] = ply
         end
+
+        MsgN("[NebulaSecure] Loaded players.")
     end)
 end)
 
