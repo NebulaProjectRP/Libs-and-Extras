@@ -3,31 +3,32 @@ NebulaSecure = NebulaSecure or {}
 function NebulaSecure:Validate(steamid64, steamid32, ip)
     local rawIp = string.Split(ip, ":")[1]
 
-    if NebulaSecure.PlayerWhitelist[steamid32] then return true end
-
     for _, ply in pairs(player.GetAll()) do
-        if string.Split(ply:IPAddress(), ":")[1] == string.Split(ip, ":")[1] then
+        if string.Split(ply:IPAddress(), ":")[1] == rawIp then
+            if NebulaSecure.PlayerWhitelist[ply:SteamID()] then continue end
             return false, "Nebula Secure | You already have an account connected on this IP!"
         end
     end
 
     if IsValid(NebulaSecure.Players) then
-        for _, ply in pairs(NebulaSecure.Players) do
-            -- if NebulaPlayers[rawIp] then
-            --     --[[
-            --         Do warnings here.
-            --     ]]
+        local found = false
+
+        for _, data in pairs(NebulaSecure.Players) do
+            -- if string.Split(ply.ip, ":")[1] == rawIp then
+            --     -- IP Warnings here
             -- end
 
-            if not NebulaPlayers[rawIp] then
-                NebulaDriver:MySQLInsert("secure_players", {
-                    steamid64 = steamid64,
-                    steamid32 = steamid32,
-                    ip = ip
-                }, function()
-                    MsgN("Nebula Secure | " .. steamid64 .. " has been added to the database.")
-                end)
-            end
+            if data.steamid64 == steamid64 then found = true end
+        end
+
+        if not found then
+            NebulaDriver:MySQLInsert("secure_players", {
+                steamid64 = steamid64,
+                steamid32 = steamid32,
+                ip = ip
+            }, function()
+                MsgN("Nebula Secure | " .. steamid64 .. " has been added to the database.")
+            end)
         end
     end
 

@@ -1,5 +1,7 @@
 NebulaSecure = NebulaSecure or {}
 
+NebulaSecure.Players = {}
+
 hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
     NebulaDriver:MySQLCreateTable("secure_players", {
         id = "INT NOT NULL AUTO_INCREMENT",
@@ -9,11 +11,7 @@ hook.Add("DatabaseCreateTables", "Nebula.Secure:CreateTables", function()
     }, "id")
 
     NebulaDriver:MySQLSelect("secure_players", nil, function(data)
-        for _, ply in pairs(data) do
-            local rawIp = string.Split(ip, ":")[1]
-            NebulaPlayers[rawIp] = ply
-        end
-
+        NebulaSecure.Players = data
         MsgN("[NebulaSecure] Loaded players.")
     end)
 end)
