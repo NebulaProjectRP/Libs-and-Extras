@@ -305,15 +305,3 @@ function PermaProps.UselessContent( tbl )
 	return tbl
 
 end
-
-/*
-local data = util.JSONToTable(file.Read("permaprops.json"))
-local spawns = {}
-
-for k, v in pairs(data) do
-	//MsgN(v.field1)
-    spawns[v.field1] = v.field3
-end
-
-file.Write("rp_downtown_asap_v4_2.txt", util.TableToJSON(spawns))
-*/

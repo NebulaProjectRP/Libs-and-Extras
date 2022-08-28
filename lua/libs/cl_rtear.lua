@@ -25,7 +25,6 @@ function RT.Create(identifier, wi, he, mat, add)
         material = mat,
         mat_path = mat.GetPath ~= nil and mat:GetPath() or "RT_" .. identifier .. seed
     }
-    --MsgN(RT.Pool[identifier].material)
 
     return identifier
 end
