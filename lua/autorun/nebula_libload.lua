@@ -37,3 +37,11 @@ end
 MsgC(Color(255, 50, 255), "[NebulaSecure] ", color_white, " Loaded\n")
 
 MsgC(Color(255, 50, 255), "[LIB] ", color_white, " Libraries loaded successfuly.\n")
+
+if SERVER then
+    resource.AddWorkshop("2687867292")
+    resource.AddWorkshop("2842851973")
+    resource.AddWorkshop("2843426694")
+    resource.AddWorkshop("2845283096")
+    resource.AddWorkshop("2845286113")
+end
