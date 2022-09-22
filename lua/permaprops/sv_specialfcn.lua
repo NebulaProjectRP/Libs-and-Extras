@@ -304,7 +304,7 @@ end
 PermaProps.SpecialENTSSave["prop_effect"] = function( ent )
 
 	local content = {}
-	content.Class = "pp_prop_effect"
+	content.Class = "prop_dynamic"
 	content.Model = ent.AttachedEntity:GetModel()
 
 	return content
